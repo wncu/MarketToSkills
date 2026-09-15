@@ -1,0 +1,25 @@
+{
+  "name": "markettoskills",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Plataforma para almacenar y visualizar skills de desarrollo",
+  "workspaces": [
+    "apps/web",
+    "packages/shared"
+  ],
+  "scripts": {
+    "dev": "bun run --filter '*' dev",
+    "dev:web": "bun run --filter @markettoskills/web dev",
+    "dev:api": "cd apps/api && cargo watch -x run",
+    "build": "bun run --filter '*' build",
+    "build:web": "bun run --filter @markettoskills/web build",
+    "build:api": "cd apps/api && cargo build --release",
+    "test": "bun run --filter '*' test",
+    "test:web": "bun run --filter @markettoskills/web test",
+    "test:api": "cd apps/api && cargo test",
+    "lint": "bun run --filter @markettoskills/web lint",
+    "format": "bun run --filter @markettoskills/web format"
+  },
+  "author": "",
+  "license": "MIT"
+}

@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+.bun/
+
+# Build outputs
+dist/
+build/
+target/
+*.wasm
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Rust
+target/
+**/*.rs.bk
+Cargo.lock
+
+# Bun
+bun.lockb
+
+# Temporary
+tmp/
+temp/
+.cache/
