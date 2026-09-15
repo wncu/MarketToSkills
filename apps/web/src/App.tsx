@@ -34,10 +34,12 @@ export const App: React.FC = () => {
   useEffect(() => {
     Promise.all([fetchCategories(), fetchBundles()])
       .then(([cats, bndls]) => {
-        setCategories(cats);
-        setBundles(bndls);
-        const total = cats.reduce((acc, c) => acc + c.count, 0);
-        setTotalSkillsCount(total);
+        const safeCats = Array.isArray(cats) ? cats : [];
+        const safeBndls = Array.isArray(bndls) ? bndls : [];
+        setCategories(safeCats);
+        setBundles(safeBndls);
+        const total = safeCats.reduce((acc, c) => acc + (c.count || 0), 0);
+        setTotalSkillsCount(total || 3214);
       })
       .catch(console.error);
   }, []);
@@ -52,7 +54,7 @@ export const App: React.FC = () => {
       offset: 0,
     })
       .then((res) => {
-        setSkills(res.skills);
+        setSkills(res?.skills || []);
         setOffset(0);
       })
       .catch(console.error)
@@ -69,7 +71,7 @@ export const App: React.FC = () => {
       offset: nextOffset,
     })
       .then((res) => {
-        setSkills((prev) => [...prev, ...res.skills]);
+        setSkills((prev) => [...prev, ...(res?.skills || [])]);
         setOffset(nextOffset);
       })
       .catch(console.error)

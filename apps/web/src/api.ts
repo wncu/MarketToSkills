@@ -3,30 +3,39 @@ import { Category, Skill, SkillDetail, Bundle, SkillsListResponse } from './type
 const API_BASE = '/api';
 let cachedCatalog: Skill[] | null = null;
 
+function formatSkill(item: any): Skill {
+  const cat = item.category || 'general';
+  const slug =
+    item.slug ||
+    item.folder ||
+    (item.id && item.id.includes('/') ? item.id.split('/')[1] : item.id) ||
+    (item.name ? item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'skill');
+
+  return {
+    id: item.id || `${cat}/${slug}`,
+    name: item.name || slug.replace(/-/g, ' ').toUpperCase(),
+    description: item.description || 'Verified autonomous coding agent skill.',
+    category: cat,
+    category_label: (item.category_label || cat).replace(/-/g, ' ').toUpperCase(),
+    category_icon: item.category_icon || 'Layers',
+    source: item.source || 'MarketToSkills Registry',
+    path: item.path || `skills/${cat}/${slug}`,
+    folder: slug,
+    files: Array.isArray(item.files) && item.files.length > 0 ? item.files : ['SKILL.md'],
+    size_bytes: item.size_bytes || 4096,
+  };
+}
+
 async function getStaticCatalog(): Promise<Skill[]> {
-  if (cachedCatalog) return cachedCatalog;
+  if (cachedCatalog && cachedCatalog.length > 0) return cachedCatalog;
   try {
     const res = await fetch('/catalog.json');
     if (res.ok) {
       const data = await res.json();
-      cachedCatalog = data.map((item: any) => {
-        const cat = item.category || 'general';
-        const slug = item.slug || item.id?.split('/')[1] || item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        return {
-          id: item.id || `${cat}/${slug}`,
-          name: item.name,
-          description: item.description || '',
-          category: cat,
-          category_label: cat.replace(/-/g, ' ').toUpperCase(),
-          category_icon: 'Layers',
-          source: 'MarketToSkills Registry',
-          path: item.path || `skills/${cat}/${slug}`,
-          folder: slug,
-          files: ['SKILL.md'],
-          size_bytes: 4096,
-        };
-      });
-      return cachedCatalog!;
+      if (Array.isArray(data)) {
+        cachedCatalog = data.map(formatSkill);
+        return cachedCatalog;
+      }
     }
   } catch (e) {
     console.warn('Fallback catalog failed', e);
@@ -37,7 +46,18 @@ async function getStaticCatalog(): Promise<Skill[]> {
 export async function fetchCategories(): Promise<Category[]> {
   try {
     const res = await fetch(`${API_BASE}/categories`);
-    if (res.ok) return await res.json();
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        return data.map((c: any) => ({
+          id: c.id,
+          label: c.label || c.name || c.id,
+          icon: c.icon || 'Layers',
+          description: c.description || `Verified ${c.name || c.id} skills for autonomous agents`,
+          count: c.count || 0,
+        }));
+      }
+    }
   } catch (e) {
     // continue to fallback
   }
@@ -46,13 +66,15 @@ export async function fetchCategories(): Promise<Category[]> {
     const res = await fetch('/categories.json');
     if (res.ok) {
       const data = await res.json();
-      return data.map((c: any) => ({
-        id: c.id,
-        label: c.name || c.label || c.id,
-        icon: 'Layers',
-        description: `Verified ${c.name || c.id} skills for autonomous agents`,
-        count: c.count || 0,
-      }));
+      if (Array.isArray(data)) {
+        return data.map((c: any) => ({
+          id: c.id,
+          label: c.name || c.label || c.id,
+          icon: 'Layers',
+          description: `Verified ${c.name || c.id} skills for autonomous agents`,
+          count: c.count || 0,
+        }));
+      }
     }
   } catch (e) {
     console.warn('Fallback categories failed', e);
@@ -80,7 +102,38 @@ export async function fetchSkills(params: {
     query.set('offset', offset.toString());
 
     const res = await fetch(`${API_BASE}/skills?${query.toString()}`);
-    if (res.ok) return await res.json();
+    if (res.ok) {
+      const data = await res.json();
+      if (data && Array.isArray(data.skills)) {
+        return {
+          skills: data.skills.map(formatSkill),
+          total: data.total ?? data.skills.length,
+          offset: data.offset ?? offset,
+          limit: data.limit ?? limit,
+        };
+      } else if (Array.isArray(data)) {
+        // Raw array returned from /catalog.json rewrite
+        let filtered = data.map(formatSkill);
+        if (params.category && params.category !== 'all') {
+          filtered = filtered.filter(s => s.category === params.category);
+        }
+        if (params.search) {
+          const q = params.search.toLowerCase();
+          filtered = filtered.filter(
+            s =>
+              s.name.toLowerCase().includes(q) ||
+              s.description.toLowerCase().includes(q) ||
+              s.category.toLowerCase().includes(q)
+          );
+        }
+        return {
+          skills: filtered.slice(offset, offset + limit),
+          total: filtered.length,
+          offset,
+          limit,
+        };
+      }
+    }
   } catch (e) {
     // continue to fallback
   }
@@ -114,27 +167,18 @@ export async function fetchSkills(params: {
 export async function fetchSkillDetail(category: string, id: string): Promise<SkillDetail> {
   try {
     const res = await fetch(`${API_BASE}/skills/${category}/${id}`);
-    if (res.ok) return await res.json();
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.name) return { ...formatSkill(data), content: data.content || data.instructions || '' };
+    }
   } catch (e) {
     // continue to fallback
   }
 
   const catalog = await getStaticCatalog();
-  const found = catalog.find(s => s.id === `${category}/${id}` || s.folder === id);
+  const found = catalog.find(s => s.id === `${category}/${id}` || s.folder === id || s.id === id);
 
-  const baseSkill: Skill = found || {
-    id: `${category}/${id}`,
-    name: id.replace(/-/g, ' ').toUpperCase(),
-    description: 'Curated agent skill with high-performance instructions.',
-    category,
-    category_label: category.toUpperCase(),
-    category_icon: 'Layers',
-    source: 'MarketToSkills Registry',
-    path: `skills/${category}/${id}`,
-    folder: id,
-    files: ['SKILL.md'],
-    size_bytes: 4096,
-  };
+  const baseSkill: Skill = found || formatSkill({ category, id, name: id.replace(/-/g, ' ').toUpperCase() });
 
   return {
     ...baseSkill,
@@ -159,7 +203,10 @@ curl -sSL https://markettoskills.com/api/agent/install?skills=${category}/${id} 
 export async function fetchBundles(): Promise<Bundle[]> {
   try {
     const res = await fetch(`${API_BASE}/bundles`);
-    if (res.ok) return await res.json();
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) return data;
+    }
   } catch (e) {}
 
   return [
@@ -216,7 +263,12 @@ export async function fetchLLMsTxt(): Promise<string> {
 export async function fetchRecommendations(query: string): Promise<{ recommended_skills: Skill[] }> {
   try {
     const res = await fetch(`${API_BASE}/agent/recommend?query=${encodeURIComponent(query)}`);
-    if (res.ok) return await res.json();
+    if (res.ok) {
+      const data = await res.json();
+      if (data && Array.isArray(data.recommended_skills)) {
+        return { recommended_skills: data.recommended_skills.map(formatSkill) };
+      }
+    }
   } catch (e) {}
 
   const catalog = await getStaticCatalog();
