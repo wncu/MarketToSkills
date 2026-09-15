@@ -1,0 +1,22 @@
+# MarketToSkills — LLM Agent Registry Manifest
+
+> Generated: 2026-09-15T17:38:33.859136 | Skills Count: 1506
+
+## API Endpoints for Autonomous Agents
+- GET /api/skills — Returns full JSON array of all active skills
+- GET /api/categories — Returns categories with live count
+- GET /api/agent/install?skills=id1,id2 — Download concatenated installation bundle
+
+## Active Skill Categories
+- **Frontend** (`frontend`): 99 skills
+- **Backend** (`backend`): 186 skills
+- **Ai Ml** (`ai-ml`): 0 skills
+- **Devops Cloud** (`devops-cloud`): 0 skills
+- **Mobile** (`mobile`): 76 skills
+- **Security** (`security`): 946 skills
+- **Database** (`database`): 85 skills
+- **Design Ui** (`design-ui`): 0 skills
+- **Testing Qa** (`testing-qa`): 114 skills
+- **Blockchain Web3** (`blockchain-web3`): 0 skills
+- **Automation Tooling** (`automation-tooling`): 0 skills
+- **Architecture System** (`architecture-system`): 0 skills

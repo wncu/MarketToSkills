@@ -1,0 +1,24 @@
+{
+  "buildCommand": "bun run build:web",
+  "outputDirectory": "apps/web/dist",
+  "framework": "vite",
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/api/agent/manifest",
+      "destination": "/llms.txt"
+    },
+    {
+      "source": "/api/categories",
+      "destination": "/categories.json"
+    },
+    {
+      "source": "/api/skills",
+      "destination": "/catalog.json"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

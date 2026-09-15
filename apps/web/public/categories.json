@@ -1,0 +1,62 @@
+[
+  {
+    "id": "frontend",
+    "name": "Frontend",
+    "count": 99
+  },
+  {
+    "id": "backend",
+    "name": "Backend",
+    "count": 186
+  },
+  {
+    "id": "ai-ml",
+    "name": "Ai Ml",
+    "count": 0
+  },
+  {
+    "id": "devops-cloud",
+    "name": "Devops Cloud",
+    "count": 0
+  },
+  {
+    "id": "mobile",
+    "name": "Mobile",
+    "count": 76
+  },
+  {
+    "id": "security",
+    "name": "Security",
+    "count": 946
+  },
+  {
+    "id": "database",
+    "name": "Database",
+    "count": 85
+  },
+  {
+    "id": "design-ui",
+    "name": "Design Ui",
+    "count": 0
+  },
+  {
+    "id": "testing-qa",
+    "name": "Testing Qa",
+    "count": 114
+  },
+  {
+    "id": "blockchain-web3",
+    "name": "Blockchain Web3",
+    "count": 0
+  },
+  {
+    "id": "automation-tooling",
+    "name": "Automation Tooling",
+    "count": 0
+  },
+  {
+    "id": "architecture-system",
+    "name": "Architecture System",
+    "count": 0
+  }
+]
