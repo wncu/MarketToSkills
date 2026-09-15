@@ -1,0 +1,86 @@
+[
+  {
+    "id": "design",
+    "label": "Design & UI/UX",
+    "icon": "🎨",
+    "description": "Design systems, UI/UX engineering, Tailwind CSS, animations, typography, color palettes, wireframes, and design guidelines.",
+    "count": 335
+  },
+  {
+    "id": "frontend",
+    "label": "Frontend Development",
+    "icon": "🌐",
+    "description": "Modern web frontend frameworks, React, Next.js, Vue, Svelte, Angular, Astro, DOM manipulation, client state, and web performance.",
+    "count": 99
+  },
+  {
+    "id": "backend",
+    "label": "Backend & APIs",
+    "icon": "⚙️",
+    "description": "Backend systems, RESTful APIs, GraphQL, Node.js, Express, Fastify, Rust, Go, Python APIs, microservices, gRPC, and server architecture.",
+    "count": 186
+  },
+  {
+    "id": "mobile",
+    "label": "Mobile Development",
+    "icon": "📱",
+    "description": "Cross-platform and native mobile apps: Flutter, Dart, Expo, React Native, iOS, Swift, SwiftUI, Android, Kotlin, APK/AAB builds.",
+    "count": 76
+  },
+  {
+    "id": "cloud-devops",
+    "label": "Cloud & DevOps",
+    "icon": "☁️",
+    "description": "AWS, Google Cloud, Azure, Cloudflare, Docker, Kubernetes, Terraform, Terragrunt, CI/CD pipelines, SRE, monitoring, and Linux.",
+    "count": 219
+  },
+  {
+    "id": "database",
+    "label": "Database & Storage",
+    "icon": "🗄️",
+    "description": "Relational and NoSQL databases, PostgreSQL, Supabase, Firebase, SQLite, Redis, MongoDB, ClickHouse, DuckDB, Vector DBs, SQL tuning.",
+    "count": 85
+  },
+  {
+    "id": "ai-agents",
+    "label": "AI & Agent Engineering",
+    "icon": "🤖",
+    "description": "Model Context Protocol (MCP), agentic workflows, prompt engineering, RAG, embeddings, LLM orchestration, Hugging Face, transformers.",
+    "count": 568
+  },
+  {
+    "id": "security",
+    "label": "Security & Pentesting",
+    "icon": "🛡️",
+    "description": "Application security, penetration testing, OWASP standards, MITRE ATT&CK, vulnerability auditing, authentication, encryption, SLSA.",
+    "count": 946
+  },
+  {
+    "id": "marketing-growth",
+    "label": "Marketing & Growth",
+    "icon": "📈",
+    "description": "Technical SEO, CRO, direct copywriting, viral loops, marketing automation, analytics, email sequences, ad creatives, launch strategies.",
+    "count": 178
+  },
+  {
+    "id": "testing-qa",
+    "label": "Testing & QA",
+    "icon": "🧪",
+    "description": "End-to-end testing, unit testing, integration tests, Playwright, Cypress, Jest, test automation, visual regression, and QA workflows.",
+    "count": 114
+  },
+  {
+    "id": "gamedev",
+    "label": "Game Development",
+    "icon": "🎮",
+    "description": "Game engines, Godot, Unity, Unreal Engine, Phaser, PixiJS, 2D/3D math, shaders, game loops, audio, steam publishing, sprite sheets.",
+    "count": 84
+  },
+  {
+    "id": "productivity-tools",
+    "label": "Productivity & Tooling",
+    "icon": "⚡",
+    "description": "Document synthesis (Word docx, PowerPoint pptx, Excel xlsx, PDF), Slack bots, Notion, automation scripts, web scrapers, git tooling.",
+    "count": 324
+  }
+]
